@@ -1,5 +1,8 @@
-local Game = require("src.game.init")
-local GameObject = require("src.game.object")
+local require = require("src.tools.require_relative")
+local Game = require(".init")
+
+local Sprite = require("src.engine.sprite")
+local GameObject = require(".object")
 
 ---@class Game
 ---@field ui UI
@@ -22,7 +25,8 @@ function Game:__init(ui)
     	self:_on_button_pressed()
     end)
     local image = love.graphics.newImage("assets/spaceship_ant.png")
-    self.ship = GameObject:create(250, 250, image, 128, 128, ui.joystick)
+    local sprite = Sprite:create(image)
+    self.ship = GameObject:create(250, 250, sprite, 128, 128, ui.joystick)
 end
 
 function Game.create(cls, ...)

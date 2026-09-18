@@ -1,3 +1,4 @@
+local require = require("src.tools.require_relative")
 local Button = require("src.ui.button")
 local Joystick = require("src.ui.joystick")
 
