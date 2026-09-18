@@ -6,6 +6,18 @@ function love.load()
     game = Game:create(ui)
 end
 
+function love.mousepressed(x, y)
+    ui:touchpressed(0, x, y)
+end
+
+function love.mousereleased(x, y)
+    ui:touchreleased(0, x, y)
+end
+
+function love.mousemoved(x, y)
+    ui.joystick:touchmoved(0, x, y)
+end
+
 function love.touchmoved(id, x, y)
     ui.joystick:touchmoved(id, x, y)
 end
