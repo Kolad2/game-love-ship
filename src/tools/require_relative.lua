@@ -63,6 +63,20 @@ local Require = {
         local caller = assert(debug.getinfo(2, "S"), "cannot determine require caller")
         local require_path = resolve_relative(module_name, caller.source)
         package.loaded[require_path] = value
+    end,
+
+    ---Из init.lua загружает модуль с именем родительской папки.
+    ---Например, src/game/init.lua загружает require(".game").
+    ---@return any
+    load_this_module = function()
+        local caller = assert(debug.getinfo(2, "S"), "cannot determine require caller")
+        local source = caller.source:gsub("^@", ""):gsub("\\", "/")
+        local folder_name = source:match("([^/]+)/init%.lua$")
+
+        assert(folder_name, "require.init() must be called from init.lua")
+
+        local require_path = resolve_relative("." .. folder_name, caller.source)
+        return require(require_path)
     end
 }
 
