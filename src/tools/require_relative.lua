@@ -48,6 +48,8 @@ local function resolve_relative(module_name, stack_level)
 end
 
 
+---@class RelativeRequire
+---@overload fun(module_name: string): any
 local Require = {}
 
 
