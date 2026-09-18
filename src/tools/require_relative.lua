@@ -54,6 +54,15 @@ local Require = {
     path = function(module_name)
         local caller = assert(debug.getinfo(2, "S"), "cannot determine require caller")
         return resolve_relative(module_name, caller.source)
+    end,
+
+    ---Записывает значение в package.loaded по относительному пути.
+    ---@param module_name string
+    ---@param value any
+    set_loaded = function(module_name, value)
+        local caller = assert(debug.getinfo(2, "S"), "cannot determine require caller")
+        local require_path = resolve_relative(module_name, caller.source)
+        package.loaded[require_path] = value
     end
 }
 
