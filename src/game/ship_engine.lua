@@ -48,7 +48,7 @@ function ShipEngine:get_velocity(face)
             turn_input = -1
         end
     end
-    alpha_max = math.pi / 6
+    local alpha_max = math.pi / 6
     local turn_vt = math.abs(turn_input) * math.cos(alpha_max) * 120
     local turn_vn = - turn_input * math.sin(alpha_max) * 120
     

@@ -9,6 +9,7 @@ local Sprite = require("src.engine.sprite")
 ---@field width number
 ---@field height number
 ---@field image love.Image|nil
+---@field face number
 local GameObject = {}
 GameObject.__index = GameObject
 
@@ -38,16 +39,14 @@ end
 ---Обновление объекта.
 ---@param dt number
 function GameObject:update(dt)
-    local velocity_x,
-          velocity_y,
-          angular_velocity =
+    local vx, vy, omega =
         self.engine:get_velocity(self.face)
 
     -- Интегрирование скорости.
-    self.x = self.x + velocity_x * dt
-    self.y = self.y + velocity_y * dt
+    self.x = self.x + vx * dt
+    self.y = self.y + vy * dt
 
-    self.face = self.face + angular_velocity * dt
+    self.face = self.face + omega * dt
 
     -- Переход через правую границу.
     if self.x > love.graphics.getWidth() then
