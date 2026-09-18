@@ -17,14 +17,11 @@ GameObject.__index = GameObject
 ---Создаёт игровой объект.
 ---@param x number
 ---@param y number
----@param image Sprite|nil
----@param width number|nil
----@param height number|nil
+---@param sprite Sprite
 ---@param controller Controller
 ---@return GameObject
-function GameObject:create(x, y, sprite, width, height , controller)
+function GameObject:create(x, y, sprite, controller)
     local obj = setmetatable({}, self)
-
     obj.x = x or 0
     obj.y = y or 0
     obj.speed = 120

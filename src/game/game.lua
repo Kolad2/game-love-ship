@@ -26,7 +26,7 @@ function Game:__init(ui)
     end)
     local image = love.graphics.newImage("assets/spaceship_ant.png")
     local sprite = Sprite:create(image)
-    self.ship = GameObject:create(250, 250, sprite, 128, 128, ui.joystick)
+    self.ship = GameObject:create(250, 250, sprite, ui.joystick)
 end
 
 function Game.create(cls, ...)
