@@ -1,9 +1,11 @@
 Texture = require("src.engine.texture")
 
 ---@class Sprite
----@field image Texture
+---@field texture Texture
 ---@field width number
 ---@field height number
+---@field sx number
+---@field sy number
 local Sprite = {}
 Sprite.__index = Sprite
 
@@ -12,14 +14,15 @@ Sprite.__index = Sprite
 ---@param source Texture|string
 ---@return Sprite
 function Sprite.create(cls, source)
+     ---@type Sprite
     local obj = setmetatable({}, cls)
     
     if type(source) == "string" then
-        obj.image = Texture(source)
+        obj.texture = Texture(source)
     else
-        obj.image = source
+        obj.texture = source
     end
-    obj.width, obj.height = obj.image.width, obj.image.height
+    obj.width, obj.height = obj.texture.width, obj.texture.height
     obj.x = 0
     obj.y = 0
     obj.sx = 1
@@ -35,13 +38,8 @@ function Sprite:update(source)
 end
 
 ---Рисует спрайт.
----@param x number
----@param y number
----@param rotation number|nil
----@param scale_x number|nil
----@param scale_y number|nil
 function Sprite:draw()
-    self.image:draw(
+    self.texture:draw(
         self.x,
         self.y,
         self.angle,
