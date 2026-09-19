@@ -18,7 +18,7 @@ function Sprite.create(cls, source)
     local obj = setmetatable({}, cls)
     
     if type(source) == "string" then
-        obj.texture = Texture(source)
+        obj.texture = Texture:create(source)
     else
         obj.texture = source
     end
