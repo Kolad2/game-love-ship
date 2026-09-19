@@ -1,3 +1,4 @@
+local require = require("src.tools.require_relative")
 local Keyframe = require(".keyframe")
 
 
