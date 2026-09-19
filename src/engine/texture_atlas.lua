@@ -1,22 +1,28 @@
----@class SpriteSheet
+Texture = require("src.engine.texture")
+
+---@class TextureAtlas
 ---@field image love.Image
 ---@field frame_width number
 ---@field frame_height number
 ---@field columns number
 ---@field rows number
 ---@field frame_count number
----@field quads love.Quad[]
-local SpriteSheet = {}
-SpriteSheet.__index = SpriteSheet
+---@field textures love.Quad[]
+local TextureAtlas = {}
+TextureAtlas.__index = TextureAtlas
 
 
 ---Создаёт sprite sheet.
----@param image love.Image
+---@param image love.Image|string Изображение или путь к файлу.
 ---@param frame_width number
 ---@param frame_height number
 ---@return SpriteSheet
-function SpriteSheet.create(cls, image, frame_width, frame_height)
+function TextureAtlas.create(cls, image, frame_width, frame_height)
     local obj = setmetatable({}, cls)
+
+    if type(image) == "string" then
+        image = love.graphics.newImage(image)
+    end
 
     obj.image = image
     obj.frame_width = frame_width
@@ -28,7 +34,7 @@ function SpriteSheet.create(cls, image, frame_width, frame_height)
     obj.rows = math.floor(image_height / frame_height)
 
     obj.frame_count = obj.columns * obj.rows
-    obj.quads = {}
+    obj.textures = {}
 
     for index = 1, obj.frame_count do
         local column = (index - 1) % obj.columns
@@ -37,7 +43,7 @@ function SpriteSheet.create(cls, image, frame_width, frame_height)
         local x = column * frame_width
         local y = row * frame_height
 
-        obj.quads[index] = love.graphics.newQuad(
+        local quad = love.graphics.newQuad(
             x,
             y,
             frame_width,
@@ -45,6 +51,7 @@ function SpriteSheet.create(cls, image, frame_width, frame_height)
             image_width,
             image_height
         )
+        obj.textures[index] = Texture:create(obj.image, quad)
     end
 
     return obj
@@ -53,35 +60,15 @@ end
 
 ---Возвращает quad указанного кадра.
 ---@param index number
----@return love.Quad
-function SpriteSheet:get_quad(index)
+---@return Texture
+function TextureAtlas:get_texture(index)
     assert(
         index >= 1 and index <= self.frame_count,
         "SpriteSheet frame index out of range: " .. tostring(index)
     )
 
-    return self.quads[index]
+    return self.textures[index]
 end
 
 
----Рисует указанный кадр.
----@param index number
----@param x number
----@param y number
----@param rotation number|nil
----@param scale_x number|nil
----@param scale_y number|nil
-function SpriteSheet:draw(index, x, y, rotation, scale_x, scale_y)
-    love.graphics.draw(
-        self.image,
-        self:get_quad(index),
-        x,
-        y,
-        rotation or 0,
-        scale_x or 1,
-        scale_y or scale_x or 1
-    )
-end
-
-
-return SpriteSheet
+return TextureAtlas

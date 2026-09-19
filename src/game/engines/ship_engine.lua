@@ -1,8 +1,11 @@
----@class ShipEngine
+local require = require("src.tools.require_relative")
+local Engine = require(".engine")
+
+---@class ShipEngine : ObjectEngine
 ---@field controller Controller
 ---@field speed number
 ---@field rotation_speed number
-local ShipEngine = {}
+local ShipEngine = setmetatable({},Engine)
 ShipEngine.__index = ShipEngine
 
 
@@ -22,6 +25,11 @@ function ShipEngine.create(cls, controller)
     return obj
 end
 
+function ShipEngine:update(face)
+	self.face = face
+    self.face_x = math.cos(face)
+    self.face_y = math.sin(face)
+end
 
 ---Вычисляет текущую скорость объекта.
 ---Сам объект не перемещает.
@@ -30,9 +38,7 @@ end
 ---@return number velocity_y dy/dt
 ---@return number angular_velocity dface/dt
 function ShipEngine:get_velocity(face)
-    self.face = face
-    self.face_x = math.cos(face)
-    self.face_y = math.sin(face)
+    self:update(face)
     
     -- Насколько ввод направлен вперёд и назад.
     local forward_input, turn_input = self:get_frenet_input()

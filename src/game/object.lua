@@ -1,5 +1,5 @@
 local require = require("src.tools.require_relative")
-local ShipEngine = require("src.game.ship_engine")
+local ShipEngine = require(".engines.ship_engine")
 local Sprite = require("src.engine.sprite")
 
 
@@ -20,14 +20,13 @@ GameObject.__index = GameObject
 ---@param sprite Sprite
 ---@param controller Controller
 ---@return GameObject
-function GameObject:create(x, y, sprite, controller)
+function GameObject:create(x, y, sprite, engine)
     local obj = setmetatable({}, self)
     obj.x = x or 0
     obj.y = y or 0
     obj.speed = 120
     obj.face = 0
-    obj.controller = controller
-    obj.engine = ShipEngine:create(controller)
+    obj.engine = engine
     obj.sprite = sprite
     return obj
 end
