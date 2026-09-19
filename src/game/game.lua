@@ -1,13 +1,13 @@
 local require = require("src.tools.require_relative")
 local Game = require(".init")
 
-local SpriteSheet = require("src.engine.texture_atlas")
+local TextureAtlas = require("src.engine.texture_atlas")
 local Sprite = require("src.engine.sprite")
 local ShipEngine = require(".engines.ship_engine")
 local DirectionalEngine = require(".engines.directional_engine")
 local Texture = require("src.engine.texture")
 local GameObject = require(".object")
-
+local AnimationTrack = require("src.engine.animation.animation_track")
 
 ---@class Game
 ---@field ui UI
@@ -53,34 +53,20 @@ function Game:init_objects()
     local ship_engine = ShipEngine:create(ui.joystick)
     local ship = GameObject:create(250, 250, sprite, ship_engine)
     
-    local sprite_sheet = SpriteSheet:create("assets/plasma_bullet.png", 80, 64)
+    local sprite_sheet = TextureAtlas:create("assets/plasma_bullet.png", 80, 64)
     local quad_texture = sprite_sheet:get_texture(2)
     local sprite = Sprite:create(quad_texture)
     local engine = DirectionalEngine:create(10, 0)
-    local track = {
-        {
-            {
-                target = sprite,
-                key = "texture",
-                value = sprite_sheet:get_texture(1)
-            }
-        },
-        {
-            {
-                target = sprite,
-                key = "texture",
-                value = sprite_sheet:get_texture(2)
-            }
-        },
-        {
-            {
-                target = sprite,
-                key = "texture",
-                value = sprite_sheet:get_texture(2)
-            }
-        },
-    }
+
+    local track = AnimationTrack:create(sprite, "texture")
+    track:insert_key(sprite_sheet:get_texture(1), 0)
+    track:insert_key(sprite_sheet:get_texture(2), 1)
+    track:insert_key(sprite_sheet:get_texture(3), 2)
+    track:insert_key(sprite_sheet:get_texture(4), 3)
+    track:insert_key(sprite_sheet:get_texture(5), 4)
     local bullet = GameObject:create(250, 250, sprite, engine)
+
+    track:apply(5.5)
     
     table.insert(self.objects, ship)
     table.insert(self.objects, bullet)

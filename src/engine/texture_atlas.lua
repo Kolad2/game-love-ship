@@ -7,16 +7,17 @@ Texture = require("src.engine.texture")
 ---@field columns number
 ---@field rows number
 ---@field frame_count number
----@field textures love.Quad[]
+---@field textures Texture[]
 local TextureAtlas = {}
 TextureAtlas.__index = TextureAtlas
 
 
 ---Создаёт sprite sheet.
+---@param cls TextureAtlas
 ---@param image love.Image|string Изображение или путь к файлу.
 ---@param frame_width number
 ---@param frame_height number
----@return SpriteSheet
+---@return TextureAtlas
 function TextureAtlas.create(cls, image, frame_width, frame_height)
     local obj = setmetatable({}, cls)
 

@@ -40,7 +40,6 @@ function AnimationTrack:insert_key(value, time)
         self.frames,
         Keyframe:create(value, time)
     )
-
     return self
 end
 
@@ -51,6 +50,13 @@ end
 
 function AnimationTrack:is_future(time)
     return time > self.frames[self.last_keyframe].time
+end
+
+
+function AnimationTrack:apply(time)
+    local frame = self:get_left_keyframe_by_time(time)
+    if not frame then return nil end
+    self.target[self.key] = frame.value
 end
 
 --Возвращает левый ключевой кадр для заданного времени.
@@ -83,3 +89,5 @@ function AnimationTrack:get_left_keyframe_by_time(time)
 
     return left_keyframe
 end
+
+return AnimationTrack
