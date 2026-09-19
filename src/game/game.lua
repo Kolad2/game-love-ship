@@ -8,6 +8,8 @@ local DirectionalEngine = require(".engines.directional_engine")
 local Texture = require("src.engine.texture")
 local GameObject = require(".object")
 local AnimationTrack = require("src.engine.animation.animation_track")
+local Animation = require("src.engine.animation.animation")
+local AnimationPlayer = require("src.engine.animation.animation_player")
 
 ---@class Game
 ---@field ui UI
@@ -58,12 +60,15 @@ function Game:init_objects()
     local sprite = Sprite:create(quad_texture)
     local engine = DirectionalEngine:create(10, 0)
 
+    local aimation = Animation:create(5)
     local track = AnimationTrack:create(sprite, "texture")
     track:insert_key(sprite_sheet:get_texture(1), 0)
     track:insert_key(sprite_sheet:get_texture(2), 1)
     track:insert_key(sprite_sheet:get_texture(3), 2)
     track:insert_key(sprite_sheet:get_texture(4), 3)
     track:insert_key(sprite_sheet:get_texture(5), 4)
+
+
     local bullet = GameObject:create(250, 250, sprite, engine)
 
     track:apply(5.5)
