@@ -1,4 +1,4 @@
-local Keyframe = require("src.animation.keyframe")
+local Keyframe = require(".keyframe")
 
 
 ---@class AnimationTrack
@@ -16,6 +16,7 @@ AnimationTrack.__index = AnimationTrack
 ---@param interpolation string|nil "step" или "linear".
 ---@return AnimationTrack
 function AnimationTrack.create(cls, target, key, interpolation)
+    ---@type AnimationTrack
     local obj = setmetatable({}, cls)
 
     obj.target = target
