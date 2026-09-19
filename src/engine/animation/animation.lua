@@ -29,12 +29,4 @@ function Animation:add_track(track)
 end
 
 
----@param time number
-function Animation:apply(time)
-    for _, track in ipairs(self.tracks) do
-        track:apply(time)
-    end
-end
-
-
 return Animation
