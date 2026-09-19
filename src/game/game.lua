@@ -4,6 +4,7 @@ local init_objects = require(".init_game")
 
 ---@class Game
 ---@field ui UI
+---@field objects any
 local Game = Game or {}
 Game.__index = Game
 
