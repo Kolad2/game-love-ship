@@ -24,7 +24,9 @@ end
 
 function Game:draw()
     for i, obj in ipairs(self.objects) do
-        obj:draw()
+        if obj["draw"] then
+            obj:draw()
+        end
     end
 end
 
@@ -60,21 +62,24 @@ function Game:init_objects()
     local sprite = Sprite:create(quad_texture)
     local engine = DirectionalEngine:create(10, 0)
 
-    local aimation = Animation:create(5)
+    local animation = Animation:create(0.25, true)
     local track = AnimationTrack:create(sprite, "texture")
     track:insert_key(sprite_sheet:get_texture(1), 0)
-    track:insert_key(sprite_sheet:get_texture(2), 1)
-    track:insert_key(sprite_sheet:get_texture(3), 2)
-    track:insert_key(sprite_sheet:get_texture(4), 3)
-    track:insert_key(sprite_sheet:get_texture(5), 4)
+    track:insert_key(sprite_sheet:get_texture(2), 0.05)
+    track:insert_key(sprite_sheet:get_texture(3), 0.10)
+    track:insert_key(sprite_sheet:get_texture(4), 0.15)
+    track:insert_key(sprite_sheet:get_texture(5), 0.20)
 
+    animation:add_track(track)
+
+    local animation_player = AnimationPlayer:create()
+    animation_player:play(animation)
 
     local bullet = GameObject:create(250, 250, sprite, engine)
-
-    track:apply(5.5)
     
     table.insert(self.objects, ship)
     table.insert(self.objects, bullet)
+    table.insert(self.objects, animation_player)
 end
 
 function Game.create(cls, ...)
