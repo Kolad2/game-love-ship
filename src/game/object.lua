@@ -18,7 +18,7 @@ GameObject.__index = GameObject
 ---@param x number
 ---@param y number
 ---@param sprite Sprite
----@param controller Controller
+---@param engine ObjectEngine
 ---@return GameObject
 function GameObject:create(x, y, sprite, engine)
     local obj = setmetatable({}, self)

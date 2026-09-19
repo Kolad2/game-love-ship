@@ -10,8 +10,6 @@ Sprite.__index = Sprite
 
 ---Создаёт спрайт.
 ---@param source Texture|string
----@param x number
----@param y number
 ---@return Sprite
 function Sprite.create(cls, source)
     local obj = setmetatable({}, cls)

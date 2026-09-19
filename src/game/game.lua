@@ -57,7 +57,7 @@ function Game:init_objects()
     local quad_texture = sprite_sheet:get_texture(2)
     local sprite = Sprite:create(quad_texture)
     local engine = DirectionalEngine:create(10, 0)
-    track = {
+    local track = {
         {
             {
                 target = sprite,

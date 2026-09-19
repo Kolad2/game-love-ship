@@ -3,6 +3,8 @@
 ---@field quad love.Quad
 ---@field width number
 ---@field height number
+---@field ox number
+---@field oy number
 local Texture = {}
 Texture.__index = Texture
 
