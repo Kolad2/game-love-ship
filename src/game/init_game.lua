@@ -7,7 +7,7 @@ local Texture = require("src.engine.texture")
 local GameObject = require(".object")
 local AnimationTrack = require("src.engine.animation.animation_track")
 local Animation = require("src.engine.animation.animation")
-local AnimationPlayer = require("src.engine.animation.animation_player")
+local AnimationPlayer = require('src.engine.components.animation_player')
 
 
 local function init_bullet_animations(sprite_sheet)

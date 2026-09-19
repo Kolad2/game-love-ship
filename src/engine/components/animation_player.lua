@@ -1,3 +1,5 @@
+local Component = require("src.engine.components.component")
+
 ---@class BoundAnimationTrack
 ---@field track AnimationTrack
 ---@field target table
@@ -5,12 +7,12 @@
 ---@field last_keyframe integer|nil
 
 
----@class AnimationPlayer
+---@class AnimationPlayer : Component
 ---@field animation Animation|nil
 ---@field bound_tracks BoundAnimationTrack[]
 ---@field time number
 ---@field playing boolean
-local AnimationPlayer = {}
+local AnimationPlayer = setmetatable({}, Component)
 AnimationPlayer.__index = AnimationPlayer
 
 
