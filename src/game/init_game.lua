@@ -47,6 +47,7 @@ local function init_bullet_animations(sprite_sheet)
     return animation
 end
 
+---@param ui UI
 local function init(ui)
     local objects = {}
 	local image = love.graphics.newImage("assets/spaceship_ant.png")
