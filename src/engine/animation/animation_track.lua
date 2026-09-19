@@ -1,20 +1,19 @@
-local require = require("src.tools.require_relative")
-local Keyframe = require(".keyframe")
-
+local Keyframe = require("src.engine.animation.keyframe")
 
 ---@class AnimationTrack
 ---@field target table
 ---@field key any
----@field keyframes Keyframe[]
+---@field frames Keyframe[]
+---@field last_keyframe integer
 ---@field interpolation string
 local AnimationTrack = {}
 AnimationTrack.__index = AnimationTrack
 
 
 ---Создаёт трек свойства.
----@param target table Объект, свойство которого меняется.
----@param key any Ключ свойства.
----@param interpolation string|nil "step" или "linear".
+---@param target table
+---@param key any
+---@param interpolation string|nil
 ---@return AnimationTrack
 function AnimationTrack.create(cls, target, key, interpolation)
     ---@type AnimationTrack
@@ -23,73 +22,64 @@ function AnimationTrack.create(cls, target, key, interpolation)
     obj.target = target
     obj.key = key
     obj.interpolation = interpolation or "step"
-    obj.keyframes = {}
+    obj.frames = {}
+
+    -- 0 означает, что ключ ещё не находили.
+    obj.last_keyframe = nil
 
     return obj
 end
 
 
 ---Добавляет ключевой кадр.
----@param time number
 ---@param value any
+---@param time number
 ---@return AnimationTrack
 function AnimationTrack:insert_key(value, time)
     table.insert(
+        self.frames,
         Keyframe:create(value, time)
     )
+
     return self
 end
 
+function AnimationTrack:get_pre_key()
+    return self.frames[1]
+end
 
----Вычисляет значение трека в указанный момент.
+
+function AnimationTrack:is_future(time)
+    return time > self.frames[self.last_keyframe].time
+end
+
+--Возвращает левый ключевой кадр для заданного времени.
 ---@param time number
----@return any
-function AnimationTrack:evaluate(time)
-    local frames = self.keyframes
+---@return Keyframe|nil
+function AnimationTrack:get_left_keyframe_by_time(time)
+    local frames = self.frames
+    local count = #frames
 
-    if #frames == 0 then
+    if count == 0 then
         return nil
     end
 
-    if time <= frames[1].time then
-        return frames[1].value
+    -- До первого ключа.
+    if time < frames[1].time then
+        return self:get_pre_key()
     end
 
-    for i = 1, #frames - 1 do
-        local current = frames[i]
-        local next_frame = frames[i + 1]
+    local left_keyframe = frames[1]
 
-        if time < next_frame.time then
-            if self.interpolation == "step" then
-                return current.value
-            end
+    for i = 2, count do
+        local frame = frames[i]
 
-            if self.interpolation == "linear" then
-                local t =
-                    (time - current.time) /
-                    (next_frame.time - current.time)
-
-                return current.value +
-                    (next_frame.value - current.value) * t
-            end
-
-            return current.value
+        if frame.time > time then
+            break
         end
+
+        left_keyframe = frame
     end
 
-    return frames[#frames].value
+    return left_keyframe
 end
-
-
----Применяет состояние трека к target.
----@param time number
-function AnimationTrack:apply(time)
-    local value = self:evaluate(time)
-
-    if value ~= nil then
-        self.target[self.key] = value
-    end
-end
-
-
-return AnimationTrack
