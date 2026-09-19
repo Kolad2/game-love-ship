@@ -5,6 +5,7 @@
 ---@field height number
 ---@field ox number
 ---@field oy number
+---@field angle number
 local Texture = {}
 Texture.__index = Texture
 
@@ -12,6 +13,7 @@ Texture.__index = Texture
 ---@param quad love.Quad|nil
 ---@return Texture
 function Texture.create(cls, source, quad)
+    ---@type Texture
     local obj = setmetatable({}, cls)
 
     if type(source) == "string" then
