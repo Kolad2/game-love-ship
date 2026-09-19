@@ -39,7 +39,7 @@ function Game:init(ui)
 end
 
 function Game:init_objects()
-	local objects = init_objects()
+	local objects = init_objects(ui)
     for i, object in ipairs(objects) do
         table.insert(self.objects, object)
     end
