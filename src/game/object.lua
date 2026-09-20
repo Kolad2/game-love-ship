@@ -59,7 +59,13 @@ function GameObject:update(dt)
 
     -- Переход через правую границу.
     if self.x > love.graphics.getWidth() then
-        self.x = -50
+        self.x = 0
+    end
+    if self.y > love.graphics.getHeight() then
+        self.y = 0
+    end
+    if self.y < 0 then
+        self.y = love.graphics.getHeight()
     end
     self.sprite:update(self)
     for _, component in ipairs(self.components) do
