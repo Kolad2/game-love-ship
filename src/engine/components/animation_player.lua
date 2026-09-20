@@ -1,4 +1,5 @@
 local Component = require("src.engine.components.component")
+local Observer = require("src.tools.observer")
 
 
 
@@ -14,6 +15,7 @@ local Component = require("src.engine.components.component")
 ---@field bound_tracks BoundAnimationTrack[]
 ---@field time number
 ---@field playing boolean
+---@field animation_finished Observer
 local AnimationPlayer = setmetatable({}, Component)
 AnimationPlayer.__index = AnimationPlayer
 local super = Component
@@ -25,6 +27,7 @@ function AnimationPlayer:init()
     self.bound_tracks = {}
     self.time = 0
     self.playing = false
+    self.animation_finished = Observer:create()
 end
 
 
@@ -112,6 +115,9 @@ function AnimationPlayer:update(dt)
         else
             self.time = animation.duration
             self.playing = false
+            self:apply()
+            self.animation_finished:publish(animation)
+            return
         end
     end
 
