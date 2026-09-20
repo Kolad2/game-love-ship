@@ -54,6 +54,7 @@ end
 ---@param root table
 ---@param animation Animation
 function AnimationPlayer:play(root, animation)
+    root = root or self.root
     self.animation = animation
     self.time = 0
     self.playing = true
