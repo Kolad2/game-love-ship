@@ -1,5 +1,7 @@
 local Component = require("src.engine.components.component")
 
+
+
 ---@class BoundAnimationTrack
 ---@field track AnimationTrack
 ---@field target table
@@ -18,6 +20,7 @@ local super = Component
 
 function AnimationPlayer:init()
     super.init(self)
+
     self.animation = nil
     self.bound_tracks = {}
     self.time = 0
@@ -35,13 +38,14 @@ function AnimationPlayer.create(cls)
 end
 
 
----Разрешает путь трека относительно root.
----@param root table
+---Разрешает путь трека относительно root компонента.
 ---@param track AnimationTrack
 ---@return BoundAnimationTrack
-function AnimationPlayer:bind_track(root, track)
-    local target = root
+function AnimationPlayer:bind_track(track)
+    local target = self.root
     local path = track.path
+
+    assert(target, "AnimationPlayer is not attached to GameObject")
 
     for i = 1, #path - 1 do
         target = target[path[i]]
@@ -56,10 +60,10 @@ function AnimationPlayer:bind_track(root, track)
 end
 
 
----@param root table
 ---@param animation Animation
-function AnimationPlayer:play(root, animation)
-    root = root or self.root
+function AnimationPlayer:play(animation)
+    assert(self.root, "AnimationPlayer is not attached to GameObject")
+
     self.animation = animation
     self.time = 0
     self.playing = true
@@ -68,7 +72,7 @@ function AnimationPlayer:play(root, animation)
     for _, track in ipairs(animation.tracks) do
         table.insert(
             self.bound_tracks,
-            self:bind_track(root, track)
+            self:bind_track(track)
         )
     end
 
@@ -94,15 +98,11 @@ end
 
 ---@param dt number
 function AnimationPlayer:update(dt)
-    if not self.playing then
+    if not self.playing or not self.animation then
         return
     end
 
     local animation = self.animation
-
-    if not animation then
-        return
-    end
 
     self.time = self.time + dt
 

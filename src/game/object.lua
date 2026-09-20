@@ -10,6 +10,7 @@ local Sprite = require("src.engine.sprite")
 ---@field height number
 ---@field image love.Image|nil
 ---@field face number
+---@field components Component[]
 local GameObject = {}
 GameObject.__index = GameObject
 
@@ -28,7 +29,19 @@ function GameObject:create(x, y, sprite, engine)
     obj.face = 0
     obj.engine = engine
     obj.sprite = sprite
+    obj.components = {}
     return obj
+end
+
+---@param component Component
+---@param key string|nil
+function GameObject:add_component(component, key)
+    component.root = self
+    table.insert(self.components, component)
+    if key then
+        self[key] = component
+    end
+    return self
 end
 
 
@@ -49,6 +62,9 @@ function GameObject:update(dt)
         self.x = -50
     end
     self.sprite:update(self)
+    for _, component in ipairs(self.components) do
+        component:update(dt)
+    end
 end
 
 

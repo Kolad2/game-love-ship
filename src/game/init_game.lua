@@ -68,8 +68,8 @@ local function init(ui)
 
     local animation_player = AnimationPlayer:create()
     local bullet = GameObject:create(250, 250, sprite, engine)
-
-    animation_player:play(bullet, animation["death"])
+    bullet:add_component(animation_player, "animation_player")
+    animation_player:play(animation["fly"])
 
     table.insert(objects, ship)
     table.insert(objects, bullet)
