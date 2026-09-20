@@ -69,7 +69,7 @@ local function init(ui)
         local animation_player = AnimationPlayer:create()
         local bullet = GameObject:create(x, y, sprite, engine)
             :add_component(animation_player, "animation_player")
-        animation_player:play(_animations["birth"])
+        --- animation_player:play(_animations["birth"])
         --- animation_player:play(animation["fly"])
         return bullet
     end
