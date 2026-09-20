@@ -16,7 +16,6 @@ function Game:update(dt)
     end
     if #self.remove_objects == 0 then return end
     for _, obj in ipairs(self.remove_objects) do
-        --error("1")
         self.objects:remove(obj)
     end
     self.remove_objects = {}
@@ -52,7 +51,7 @@ end
 function Game:init_objects()
 	local objects = init_objects(ui)
     for i, object in ipairs(objects) do
-        table.insert(self.objects, object)
+        self.objects:add(object)
     end
 end
 

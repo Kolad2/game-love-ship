@@ -45,7 +45,7 @@ do
     function set:remove(item)
         local idx = self.__index_dict:get(item)
         if not idx then
-            print("Ошибка: элемент не существовал")
+            error("Error: element doesnt exist in set")
             return false
         end
         table.remove_swap(self, idx)
