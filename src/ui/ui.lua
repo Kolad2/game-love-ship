@@ -3,6 +3,7 @@ local Button = require("src.ui.button")
 local Joystick = require("src.ui.joystick")
 
 ---@class UI
+---@field joystick table
 local UI = {}
 UI._meta = {
     __index = UI

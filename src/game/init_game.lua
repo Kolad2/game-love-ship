@@ -61,19 +61,23 @@ local function init(ui)
 
     local sprite_sheet = TextureAtlas:create("assets/plasma_bullet.png", 80, 64)
     local quad_texture = sprite_sheet:get_texture(2)
-    local sprite = Sprite:create(quad_texture)
-    local engine = DirectionalEngine:create(10, 0)
+    local animations = init_bullet_animations(sprite_sheet)
 
-    local animation = init_bullet_animations(sprite_sheet)
+    function bullet_generator(_animations, _texture)
+        local sprite = Sprite:create(_texture)
+        local engine = DirectionalEngine:create(10, 0)
+        local animation_player = AnimationPlayer:create()
+        local bullet = GameObject:create(250, 250, sprite, engine)
+            :add_component(animation_player, "animation_player")
+        animation_player:play(_animations["birth"])
+        --- animation_player:play(animation["fly"])
+        return bullet
+    end
 
-    local animation_player = AnimationPlayer:create()
-    local bullet = GameObject:create(250, 250, sprite, engine)
-    bullet:add_component(animation_player, "animation_player")
-    animation_player:play(animation["fly"])
+    local bullet = bullet_generator(animations, texture)
 
     table.insert(objects, ship)
     table.insert(objects, bullet)
-    table.insert(objects, animation_player)
     return objects
 end
 
