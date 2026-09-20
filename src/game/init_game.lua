@@ -77,9 +77,9 @@ local function init(ui)
     end
     table.insert(objects, ship)
 
-    local bullet = bullet_generator(animations, texture, 250, 250, 50, 0)
+    local bullet = bullet_generator(animations, texture, 250, 250, 100, 0)
     table.insert(objects, bullet)
-    local bullet_2 = bullet_generator(animations, texture, 250, 350, 50, -25)
+    local bullet_2 = bullet_generator(animations, texture, 250, 350, 100, -25)
     table.insert(objects, bullet_2)
 
     return objects
