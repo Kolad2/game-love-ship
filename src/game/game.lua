@@ -1,5 +1,6 @@
 local require = require("src.tools.require_relative")
 local Game = require(".init")
+local GameObject = require(".object")
 local init_objects = require(".init_game")
 
 ---@class Game

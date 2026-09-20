@@ -1,7 +1,7 @@
 local require = require("src.tools.require_relative")
 local ShipEngine = require(".engines.ship_engine")
 local Sprite = require("src.engine.sprite")
-
+local Observer = require("src.tools.observer")
 
 ---@class GameObject
 ---@field x number
@@ -13,7 +13,7 @@ local Sprite = require("src.engine.sprite")
 ---@field components Component[]
 local GameObject = {}
 GameObject.__index = GameObject
-
+GameObject.request_destroy = Observer:create()
 
 ---Создаёт игровой объект.
 ---@param x number
@@ -82,6 +82,9 @@ function GameObject:draw()
     self.sprite:draw()
 end
 
+function GameObject:destroy()
+    self.request_destroy:publish(self)
+end
 
 return GameObject
 
