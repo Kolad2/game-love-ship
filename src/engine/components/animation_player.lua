@@ -14,18 +14,23 @@ local Component = require("src.engine.components.component")
 ---@field playing boolean
 local AnimationPlayer = setmetatable({}, Component)
 AnimationPlayer.__index = AnimationPlayer
+local super = Component
+
+function AnimationPlayer:init()
+    super.init(self)
+    self.animation = nil
+    self.bound_tracks = {}
+    self.time = 0
+    self.playing = false
+end
 
 
+---@param cls AnimationPlayer
 ---@return AnimationPlayer
 function AnimationPlayer.create(cls)
     ---@type AnimationPlayer
     local obj = setmetatable({}, cls)
-
-    obj.animation = nil
-    obj.bound_tracks = {}
-    obj.time = 0
-    obj.playing = false
-
+    obj:init()
     return obj
 end
 

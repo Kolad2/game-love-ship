@@ -18,8 +18,7 @@ function Component:update(dt) end
 ---@return T
 function Component.create(cls, ...)
     local obj = setmetatable({}, cls)
-    local init = rawget(cls, "init")
-    if init then init(obj, ...) end
+    obj:init(...)
     return obj
 end
 
