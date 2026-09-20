@@ -13,13 +13,13 @@ local AnimationPlayer = require('src.engine.components.animation_player')
 local function init_bullet_animations(sprite_sheet)
     local animation = {}
     do
-        animation["birth"] = Animation:create(0.25, true)
+        animation["birth"] = Animation:create(2.5, false)
         local track = AnimationTrack:create({"sprite", "texture"})
         track:insert_key(sprite_sheet:get_texture(1), 0)
-        track:insert_key(sprite_sheet:get_texture(2), 0.05)
-        track:insert_key(sprite_sheet:get_texture(3), 0.10)
-        track:insert_key(sprite_sheet:get_texture(4), 0.15)
-        track:insert_key(sprite_sheet:get_texture(5), 0.20)
+        track:insert_key(sprite_sheet:get_texture(2), 0.5)
+        track:insert_key(sprite_sheet:get_texture(3), 1.0)
+        track:insert_key(sprite_sheet:get_texture(4), 1.5)
+        track:insert_key(sprite_sheet:get_texture(5), 2.0)
         animation["birth"]:add_track(track)
     end
 
@@ -71,8 +71,14 @@ local function init(ui)
         local animation_player = AnimationPlayer:create()
         local bullet = GameObject:create(x, y, sprite, engine)
             :add_component(animation_player, "animation_player")
+
+        animation_player.animation_finished:subscribe(function(player, animation)
+            if animation == _animations["birth"] then
+                player:play(_animations["fly"])
+            end
+        end)
+
         animation_player:play(_animations["birth"])
-        --- animation_player:play(animation["fly"])
         return bullet
     end
     table.insert(objects, ship)

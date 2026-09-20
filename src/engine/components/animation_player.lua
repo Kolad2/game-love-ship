@@ -116,7 +116,7 @@ function AnimationPlayer:update(dt)
             self.time = animation.duration
             self.playing = false
             self:apply()
-            self.animation_finished:publish(animation)
+            self.animation_finished:publish(self, animation)
             return
         end
     end
