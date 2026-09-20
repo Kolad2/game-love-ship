@@ -63,21 +63,25 @@ local function init(ui)
     local quad_texture = sprite_sheet:get_texture(2)
     local animations = init_bullet_animations(sprite_sheet)
 
-    function bullet_generator(_animations, _texture)
+    function bullet_generator(_animations, _texture, x, y)
         local sprite = Sprite:create(_texture)
         local engine = DirectionalEngine:create(10, 0)
         local animation_player = AnimationPlayer:create()
-        local bullet = GameObject:create(250, 250, sprite, engine)
+        local bullet = GameObject:create(x, y, sprite, engine)
             :add_component(animation_player, "animation_player")
         animation_player:play(_animations["birth"])
         --- animation_player:play(animation["fly"])
         return bullet
     end
 
-    local bullet = bullet_generator(animations, texture)
+    local bullet = bullet_generator(animations, texture, 250, 250)
+    table.insert(objects, bullet)
+    local bullet_2 = bullet_generator(animations, texture, 250, 350)
+    table.insert(objects, bullet_2)
+
 
     table.insert(objects, ship)
-    table.insert(objects, bullet)
+
     return objects
 end
 
