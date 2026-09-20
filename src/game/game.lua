@@ -1,11 +1,12 @@
 local require = require("src.tools.require_relative")
+local set = require("src.tools.set")
 local Game = require(".init")
 local GameObject = require(".object")
 local init_objects = require(".init_game")
 
 ---@class Game
 ---@field ui UI
----@field objects any
+---@field objects set
 local Game = Game or {}
 Game.__index = Game
 
@@ -13,6 +14,12 @@ function Game:update(dt)
     for i, obj in ipairs(self.objects) do
         obj:update(dt)
     end
+    if #self.remove_objects == 0 then return end
+    for _, obj in ipairs(self.remove_objects) do
+        --error("1")
+        self.objects:remove(obj)
+    end
+    self.remove_objects = {}
 end
 
 function Game:draw()
@@ -33,8 +40,11 @@ function Game:init(ui)
     self.ui.button.pressed:subscribe(function()
     	self:_on_button_pressed()
     end)
-    self.objects = {}
-    
+    self.objects = set:create()
+    self.remove_objects = {}
+    GameObject.request_destroy:subscribe(function(game_object)
+        table.insert(self.remove_objects, game_object)
+    end)
     self:init_objects()
     
 end

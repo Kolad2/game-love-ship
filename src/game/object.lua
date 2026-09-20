@@ -59,6 +59,7 @@ function GameObject:update(dt)
 
     -- Переход через правую границу.
     if self.x > love.graphics.getWidth() then
+        self:destroy()
         self.x = 0
     end
     if self.y > love.graphics.getHeight() then
